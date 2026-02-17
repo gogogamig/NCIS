@@ -1,208 +1,194 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<title>NCIS - Portail Interne</title>
-<style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #0b0f16;
-    color: white;
-    display: flex;
-}
-.sidebar {
-    width: 230px;
-    background: #111722;
-    padding: 20px;
-    height: 100vh;
-}
-.sidebar h2 {
-    margin-bottom: 20px;
-    font-size: 18px;
-    text-align: center;
-}
-.nav-item {
-    padding: 10px;
-    margin-bottom: 8px;
-    background: #1a2233;
-    cursor: pointer;
-    border-radius: 6px;
-}
-.nav-item:hover, .nav-item.active {
-    background: #24314a;
-}
-.main {
-    flex: 1;
-    padding: 20px;
-}
-.section {
-    display: none;
-}
-.section.active {
-    display: block;
-}
-.panel {
-    background: #141b29;
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-}
-button {
-    padding: 8px 12px;
-    background: #1e90ff;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    color: white;
-}
-button:hover {
-    background: #3aa0ff;
-}
-input {
-    padding: 6px;
-    width: 100%;
-    margin-bottom: 8px;
-    border-radius: 4px;
-    border: none;
-}
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-th, td {
-    padding: 8px;
-    border-bottom: 1px solid #333;
-}
-</style>
+    <meta charset="UTF-8">
+    <title>NCIS - Portail Interne</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="sidebar">
-    <h2>NCIS PORTAL</h2>
-    <div class="nav-item active" data-section="dashboard">Tableau de bord</div>
-    <div class="nav-item" data-section="cases">Affaires</div>
-    <div class="nav-item" data-section="agents">Agents</div>
-    <div class="nav-item" data-section="messages">Messages</div>
-</div>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="logo-block">
+            <div class="logo-circle">NCIS</div>
+            <div class="logo-text">
+                <span>INTERNAL</span>
+                <span>AGENT PORTAL</span>
+            </div>
+        </div>
 
-<div class="main">
+        <div>
+            <div class="sidebar-section-title">Navigation</div>
+            <ul class="nav-list">
+                <li class="nav-item active" data-section="dashboard">Tableau de bord</li>
+                <li class="nav-item" data-section="cases">Affaires</li>
+                <li class="nav-item" data-section="agents">Agents</li>
+                <li class="nav-item" data-section="messages">Messages internes</li>
+            </ul>
+        </div>
+    </aside>
 
-    <!-- DASHBOARD -->
-    <div id="dashboard" class="section active">
-        <div class="panel">
-            <h3>Bienvenue Agent</h3>
-            <p>Portail interne NCIS – Accès restreint.</p>
+    <!-- MAIN -->
+    <main class="main">
+
+        <!-- TOP BAR -->
+        <header class="top-bar">
+            <div class="top-left">
+                <h1>Portail interne NCIS</h1>
+                <span>Accès restreint – Niveau de classification : SECRET</span>
+            </div>
+        </header>
+
+        <!-- DASHBOARD -->
+        <section id="section-dashboard" class="section active">
+            <div class="panel">
+                <h2>Bienvenue Agent</h2>
+                <p>Portail interne NCIS – Interface sécurisée.</p>
+            </div>
+        </section>
+
+        <!-- AFFAIRES -->
+        <section id="section-cases" class="section">
+            <div class="panel">
+                <h2>Affaires NCIS</h2>
+                <button class="btn" onclick="openCaseForm()">Nouvelle affaire</button>
+            </div>
+
+            <!-- FORMULAIRE AJOUT AFFAIRE -->
+            <div id="caseForm" class="panel hidden">
+                <h3>Nouvelle affaire</h3>
+
+                <input id="caseRef" placeholder="Référence (ex : NCIS-24-001)">
+                <input id="caseType" placeholder="Type d'affaire">
+                
+                <select id="casePriority">
+                    <option value="Critique">Critique</option>
+                    <option value="Haute">Haute</option>
+                    <option value="Moyenne">Moyenne</option>
+                    <option value="Basse">Basse</option>
+                </select>
+
+                <select id="caseStatus">
+                    <option value="En cours">En cours</option>
+                    <option value="Analyse forensique">Analyse forensique</option>
+                    <option value="Terrain">Terrain</option>
+                    <option value="En attente">En attente</option>
+                    <option value="Clôturée">Clôturée</option>
+                </select>
+
+                <input id="caseAgent" placeholder="Agent référent">
+                <button class="btn" onclick="addCase()">Ajouter</button>
+            </div>
+
+            <!-- TABLEAU AFFAIRES -->
+            <table id="casesTable">
+                <thead>
+                    <tr>
+                        <th>Référence</th>
+                        <th>Type</th>
+                        <th>Priorité</th>
+                        <th>Agent</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </section>
+
+        <!-- AGENTS -->
+        <section id="section-agents" class="section">
+            <div class="panel">
+                <h2>Agents NCIS</h2>
+                <button class="btn" onclick="openAgentForm()">Ajouter un agent</button>
+            </div>
+
+            <div id="agentForm" class="panel hidden">
+                <h3>Nouvel agent</h3>
+                <input id="agentName" placeholder="Nom complet">
+                <input id="agentRole" placeholder="Rôle / spécialité">
+                <button class="btn" onclick="addAgent()">Ajouter</button>
+            </div>
+
+            <table id="agentsTable">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Rôle</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </section>
+
+        <!-- MESSAGES -->
+        <section id="section-messages" class="section">
+            <div class="panel">
+                <h2>Messages internes</h2>
+                <p>Aucun message pour le moment.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- PANNEAU LATÉRAL (FICHE AFFAIRE) -->
+    <div id="casePanel" class="case-panel">
+        <div class="case-panel-content">
+            <h2>Dossier NCIS</h2>
+
+            <label>Référence</label>
+            <input id="panelRef">
+
+            <label>Type d'affaire</label>
+            <input id="panelType">
+
+            <label>Priorité</label>
+            <select id="panelPriority">
+                <option value="Critique">Critique</option>
+                <option value="Haute">Haute</option>
+                <option value="Moyenne">Moyenne</option>
+                <option value="Basse">Basse</option>
+            </select>
+
+            <label>Statut</label>
+            <select id="panelStatus">
+                <option value="En cours">En cours</option>
+                <option value="Analyse forensique">Analyse forensique</option>
+                <option value="Terrain">Terrain</option>
+                <option value="En attente">En attente</option>
+                <option value="Clôturée">Clôturée</option>
+            </select>
+
+            <label>Agent référent</label>
+            <input id="panelAgent">
+
+            <label>Description détaillée</label>
+            <textarea id="panelDesc"></textarea>
+
+            <label>Lieu</label>
+            <input id="panelLocation">
+
+            <label>Date / Heure</label>
+            <input id="panelDate" type="datetime-local">
+
+            <label>Victimes</label>
+            <textarea id="panelVictims"></textarea>
+
+            <label>Suspects</label>
+            <textarea id="panelSuspects"></textarea>
+
+            <label>Preuves collectées</label>
+            <textarea id="panelEvidence"></textarea>
+
+            <label>Notes internes</label>
+            <textarea id="panelNotes"></textarea>
+
+            <label>Niveau de classification</label>
+            <input id="panelClass">
+
+            <button class="btn" onclick="saveCase()">Sauvegarder</button>
+            <button class="btn btn-close" onclick="closeCasePanel()">Fermer</button>
         </div>
     </div>
 
-    <!-- AFFAIRES -->
-    <div id="cases" class="section">
-        <div class="panel">
-            <h3>Affaires NCIS</h3>
-            <button onclick="openCaseForm()">Ajouter une affaire</button>
-        </div>
-
-        <div id="caseForm" class="panel" style="display:none;">
-            <h4>Nouvelle affaire</h4>
-            <input id="caseRef" placeholder="Référence (ex : NCIS-24-001)">
-            <input id="caseType" placeholder="Type d'affaire">
-            <input id="caseAgent" placeholder="Agent référent">
-            <button onclick="addCase()">Ajouter</button>
-        </div>
-
-        <table id="casesTable">
-            <thead>
-                <tr>
-                    <th>Référence</th>
-                    <th>Type</th>
-                    <th>Agent</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-    </div>
-
-    <!-- AGENTS -->
-    <div id="agents" class="section">
-        <div class="panel">
-            <h3>Agents NCIS</h3>
-            <button onclick="openAgentForm()">Ajouter un agent</button>
-        </div>
-
-        <div id="agentForm" class="panel" style="display:none;">
-            <h4>Nouvel agent</h4>
-            <input id="agentName" placeholder="Nom complet">
-            <input id="agentRole" placeholder="Rôle / spécialité">
-            <button onclick="addAgent()">Ajouter</button>
-        </div>
-
-        <table id="agentsTable">
-            <thead>
-                <tr>
-                    <th>Nom</th>
-                    <th>Rôle</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-    </div>
-
-    <!-- MESSAGES -->
-    <div id="messages" class="section">
-        <div class="panel">
-            <h3>Messages internes</h3>
-            <p>Aucun nouveau message.</p>
-        </div>
-    </div>
-
-</div>
-
-<script>
-// Navigation
-document.querySelectorAll('.nav-item').forEach(item => {
-    item.onclick = () => {
-        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-        item.classList.add('active');
-
-        document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
-        document.getElementById(item.dataset.section).classList.add('active');
-    };
-});
-
-// AFFAIRES
-function openCaseForm() {
-    document.getElementById('caseForm').style.display = 'block';
-}
-function addCase() {
-    const ref = document.getElementById('caseRef').value;
-    const type = document.getElementById('caseType').value;
-    const agent = document.getElementById('caseAgent').value;
-
-    if (!ref || !type || !agent) return alert("Complète tous les champs");
-
-    const row = `<tr><td>${ref}</td><td>${type}</td><td>${agent}</td></tr>`;
-    document.querySelector('#casesTable tbody').innerHTML += row;
-
-    document.getElementById('caseForm').style.display = 'none';
-}
-
-// AGENTS
-function openAgentForm() {
-    document.getElementById('agentForm').style.display = 'block';
-}
-function addAgent() {
-    const name = document.getElementById('agentName').value;
-    const role = document.getElementById('agentRole').value;
-
-    if (!name || !role) return alert("Complète tous les champs");
-
-    const row = `<tr><td>${name}</td><td>${role}</td></tr>`;
-    document.querySelector('#agentsTable tbody').innerHTML += row;
-
-    document.getElementById('agentForm').style.display = 'none';
-}
-</script>
-
+    <script src="script.js"></script>
 </body>
 </html>
