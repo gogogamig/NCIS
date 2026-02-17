@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>NCIS - Portail Interne</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --bg-dark: #05070b;
+            --bg-panel: #10141d;
+            --accent: #1ea7ff;
+            --accent-soft: #12344a;
+            --text-main: #f5f7fb;
+            --text-muted: #9aa4b8;
+            --danger: #ff4b5c;
+            --success: #3ddc97;
+            --warning: #ffb347;
+            --border-soft: #1f2633;
+            --shadow-soft: 0 0 18px rgba(0,0,0,0.6);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle at top, #1b2735 0, #090a0f 55%, #020308 100%);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(180deg, #05070b 0%, #05070b 40%, #05070b 100%);
+            border-right: 1px solid var(--border-soft);
+            padding: 20px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .logo-block {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-circle {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 2px solid var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            letter-spacing: 1px;
+            font-size: 14px;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-text span:first-child {
+            font-size: 14px;
+            letter-spacing: 0.18em;
+            color: var(--text-muted);
+        }
+
+        .logo-text span:last-child {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .sidebar-section-title {
+            font-size: 11px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .nav-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .nav-item {
+            padding: 8px 10px;
+            border-radius: 6px;
+            font-size: 14px;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.15s, color 0.15s, transform 0.1s;
+        }
+
+        .nav-item span.label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-item.active,
+        .nav-item:hover {
+            background: var(--accent-soft);
+            color: var(--text-main);
+            transform: translateX(1px);
+        }
+
+        .nav-badge {
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 999px;
+            background: var(--danger);
+            color: white;
+        }
+
+        .nav-badge-soft {
+            background: var(--accent-soft);
+            color: var(--accent);
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            font-size: 12px;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-soft);
+            padding-top: 10px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            margin-right: 6px;
+        }
+
+        /* Main layout */
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 18px 22px;
+            gap: 18px;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .top-left {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .top-left h1 {
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        .top-left span {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .top-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .tag {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            padding: 4px 8px;
+            border-radius: 999px;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+        }
+
+        .user-pill {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 8px;
+            border-radius: 999px;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid var(--border-soft);
+        }
+
+        .user-avatar {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1ea7ff, #3ddc97);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-info span:first-child {
+            font-size: 12px;
+        }
+
+        .user-info span:last-child {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* Content grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2.1fr 1.4fr;
+            gap: 18px;
+        }
+
+        .panel {
+            background: rgba(5, 7, 11, 0.96);
+            border-radius: 10px;
+            border: 1px solid var(--border-soft);
+            box-shadow: var(--shadow-soft);
+            padding: 14px 16px;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 10px;
+        }
+
+        .panel-title {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: var(--text-muted);
+        }
+
+        .panel-subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .panel-actions {
+            font-size: 11px;
+            color: var(--accent);
+            cursor: pointer;
+        }
+
+        /* Dashboard cards */
+        .cards-row {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background: radial-gradient(circle at top left, #1b2735 0, #05070b 55%);
+            border-radius: 8px;
+            border: 1px solid var(--border-soft);
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .card-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+        }
+
+        .card-value {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .card-meta {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .card-meta span {
+            color: var(--success);
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 6px;
+            font-size: 12px;
+        }
+
+        th, td {
+            padding: 6px 4px;
+            text-align: left;
+        }
+
+        th {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border-soft);
+        }
+
+        tr:not(:last-child) td {
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+        }
+
+        tr:hover td {
+            background: rgba(18, 52, 74, 0.4);
+        }
+
+        .badge {
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 999px;
+        }
+
+        .badge-red {
+            background: rgba(255, 75, 92, 0.12);
+            color: var(--danger);
+        }
+
+        .badge-yellow {
+            background: rgba(255, 179, 71, 0.12);
+            color: var(--warning);
+        }
+
+        .badge-green {
+            background: rgba(61, 220, 151, 0.12);
+            color: var(--success);
+        }
+
+        .badge-blue {
+            background: rgba(30, 167, 255, 0.12);
+            color: var(--accent);
+        }
+
+        /* Right column panels */
+        .agents-list, .messages-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 6px;
+        }
+
+        .agent-item, .message-item {
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid var(--border-soft);
+            background: rgba(7, 10, 16, 0.9);
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .agent-main, .message-main {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .agent-name {
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .agent-meta, .message-meta {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .message-title {
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .message-tag {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            color: var(--accent);
+        }
+
+        .priority-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .priority-high {
+            background: var(--danger);
+        }
+
+        .priority-med {
+            background: var(--warning);
+        }
+
+        .priority-low {
+            background: var(--success);
+        }
+
+        /* Footer */
+        .main-footer {
+            font-size: 11px;
+            color: var(--text-muted);
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid var(--border-soft);
+            padding-top: 6px;
+            margin-top: auto;
+        }
+
+        .link-soft {
+            color: var(--accent);
+            cursor: pointer;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            body {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                flex-direction: row;
+                align-items: center;
+                gap: 16px;
+                overflow-x: auto;
+            }
+            .sidebar-footer {
+                display: none;
+            }
+            .main {
+                padding: 12px;
+            }
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="logo-block">
+            <div class="logo-circle">NCIS</div>
+            <div class="logo-text">
+                <span>INTERNAL</span>
+                <span>AGENT PORTAL</span>
+            </div>
+        </div>
+
+        <div>
+            <div class="sidebar-section-title">Navigation</div>
+            <ul class="nav-list">
+                <li class="nav-item active" data-section="dashboard">
+                    <span class="label">Tableau de bord</span>
+                </li>
+                <li class="nav-item" data-section="cases">
+                    <span class="label">
+                        Affaires
+                    </span>
+                    <span class="nav-badge">4</span>
+                </li>
+                <li class="nav-item" data-section="agents">
+                    <span class="label">Agents</span>
+                </li>
+                <li class="nav-item" data-section="messages">
+                    <span class="label">Messages internes</span>
+                    <span class="nav-badge nav-badge-soft">2</span>
+                </li>
+            </ul>
+        </div>
+
+        <div>
+            <div class="sidebar-section-title">Sécurité</div>
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <span class="label">Contrôle d’accès</span>
+                </li>
+                <li class="nav-item">
+                    <span class="label">Journal des connexions</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="sidebar-footer">
+            <div>
+                <span class="status-dot"></span>
+                Connecté au réseau sécurisé
+            </div>
+            <div>Dernière mise à jour : 07:42 ZULU</div>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+        <header class="top-bar">
+            <div class="top-left">
+                <h1>Portail interne NCIS</h1>
+                <span>Accès restreint – Niveau de classification : SECRET</span>
+            </div>
+            <div class="top-right">
+                <div class="tag">Division des enquêtes criminelles navales</div>
+                <div class="user-pill">
+                    <div class="user-avatar">GA</div>
+                    <div class="user-info">
+                        <span>Special Agent G. AUTIER</span>
+                        <span>Clearance: TOP SECRET // SI</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <section id="section-dashboard" class="section">
+            <div class="content-grid">
+                <!-- LEFT: DASHBOARD -->
+                <div class="panel">
+                    <div class="panel-header">
+                        <div>
+                            <div class="panel-title">Situation générale</div>
+                            <div class="panel-subtitle">Synthèse opérationnelle des dernières 24 heures</div>
+                        </div>
+                        <div class="panel-actions">Actualiser</div>
+                    </div>
+
+                    <div class="cards-row">
+                        <div class="card">
+                            <div class="card-label">Affaires actives</div>
+                            <div class="card-value">7</div>
+                            <div class="card-meta">
+                                <span>+2</span> depuis hier
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-label">Alertes de sécurité</div>
+                            <div class="card-value">3</div>
+                            <div class="card-meta">
+                                <span style="color: var(--warning);">1 critique</span> en attente
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-label">Agents en mission</div>
+                            <div class="card-value">12</div>
+                            <div class="card-meta">
+                                4 en surveillance, 2 en filature
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel-header" style="margin-top: 6px;">
+                        <div class="panel-title">Affaires prioritaires</div>
+                        <div class="panel-actions">Voir toutes les affaires</div>
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Dossier</th>
+                                <th>Type</th>
+                                <th>Priorité</th>
+                                <th>Agent référent</th>
+                                <th>Statut</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>NCIS-24-031</td>
+                                <td>Homicide – Base navale</td>
+                                <td><span class="badge badge-red">CRITIQUE</span></td>
+                                <td>SA DiNozzo</td>
+                                <td>En cours</td>
+                            </tr>
+                            <tr>
+                                <td>NCIS-24-027</td>
+                                <td>Intrusion réseau</td>
+                                <td><span class="badge badge-yellow">HAUTE</span></td>
+                                <td>SA McGee</td>
+                                <td>Analyse forensique</td>
+                            </tr>
+                            <tr>
+                                <td>NCIS-24-022</td>
+                                <td>Disparition personnel</td>
+                                <td><span class="badge badge-yellow">HAUTE</span></td>
+                                <td>SA Bishop</td>
+                                <td>Coordination inter-agences</td>
+                            </tr>
+                            <tr>
+                                <td>NCIS-24-019</td>
+                                <td>Fuite d’informations</td>
+                                <td><span class="badge badge-blue">MOYENNE</span></td>
+                                <td>SA Torres</td>
+                                <td>Enquête préliminaire</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- RIGHT: AGENTS + MESSAGES -->
+                <div class="panel">
+                    <div class="panel-header">
+                        <div class="panel-title">Agents en activité</div>
+                        <div class="panel-actions">Voir tous les profils</div>
+                    </div>
+
+                    <div class="agents-list">
+                        <div class="agent-item">
+                            <div class="agent-main">
+                                <div class="agent-name">SA Leroy Jethro Gibbs</div>
+                                <div class="agent-meta">Chef d’équipe – Bureau de Washington</div>
+                                <div class="agent-meta">Localisation : Terrain – Base navale Anacostia</div>
+                            </div>
+                            <div>
+                                <span class="badge badge-green">Disponible</span>
+                            </div>
+                        </div>
+
+                        <div class="agent-item">
+                            <div class="agent-main">
+                                <div class="agent-name">SA Timothy McGee</div>
+                                <div class="agent-meta">Cyber-enquêtes & Forensics</div>
+                                <div class="agent-meta">Localisation : MTAC – Analyse en cours</div>
+                            </div>
+                            <div>
+                                <span class="badge badge-blue">En support</span>
+                            </div>
+                        </div>
+
+                        <div class="agent-item">
+                            <div class="agent-main">
+                                <div class="agent-name">SA Nick Torres</div>
+                                <div class="agent-meta">Infiltration & opérations terrain</div>
+                                <div class="agent-meta">Localisation : Opération sous couverture</div>
+                            </div>
+                            <div>
+                                <span class="badge badge-yellow">Restreint</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel-header" style="margin-top: 14px;">
+                        <div class="panel-title">Messages internes</div>
+                        <div class="panel-actions">Ouvrir la messagerie</div>
+                    </div>
+
+                    <div class="messages-list">
+                        <div class="message-item">
+                            <div class="message-main">
+                                <div class="message-title">Briefing – Affaire NCIS-24-031</div>
+                                <div class="message-meta">De : Director Vance • Reçu : 06:15</div>
+                                <div class="message-meta">Présence obligatoire – Salle de conférence 3B</div>
+                            </div>
+                            <div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
+                                <div class="priority-dot priority-high"></div>
+                                <span class="message-tag">OPORD</span>
+                            </div>
+                        </div>
+
+                        <div class="message-item">
+                            <div class="message-main">
+                                <div class="message-title">Mise à jour protocole accès MTAC</div>
+                                <div class="message-meta">De : SecOps • Reçu : 05:02</div>
+                                <div class="message-meta">Nouveaux identifiants temporaires pour les agents terrain</div>
+                            </div>
+                            <div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
+                                <div class="priority-dot priority-med"></div>
+                                <span class="message-tag">SECURITY</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION AFFAIRES -->
+        <section id="section-cases" class="section" style="display:none;">
+            <div class="panel">
+                <div class="panel-header">
+                    <div>
+                        <div class="panel-title">Affaires NCIS</div>
+                        <div class="panel-subtitle">Filtrer, consulter et suivre les dossiers</div>
+                    </div>
+                    <div class="panel-actions">Nouveau dossier</div>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Réf.</th>
+                            <th>Type</th>
+                            <th>Priorité</th>
+                            <th>Agent référent</th>
+                            <th>Dernière mise à jour</th>
+                            <th>Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>NCIS-24-031</td>
+                            <td>Homicide – Personnel naval</td>
+                            <td><span class="badge badge-red">CRITIQUE</span></td>
+                            <td>SA Gibbs</td>
+                            <td>07:21</td>
+                            <td>Enquête terrain</td>
+                        </tr>
+                        <tr>
+                            <td>NCIS-24-030</td>
+                            <td>Fraude – Contrats militaires</td>
+                            <td><span class="badge badge-blue">MOYENNE</span></td>
+                            <td>SA McGee</td>
+                            <td>Hier</td>
+                            <td>Analyse documentaire</td>
+                        </tr>
+                        <tr>
+                            <td>NCIS-24-027</td>
+                            <td>Intrusion réseau</td>
+                            <td><span class="badge badge-yellow">HAUTE</span></td>
+                            <td>SA McGee</td>
+                            <td>06:48</td>
+                            <td>Forensics en cours</td>
+                        </tr>
+                        <tr>
+                            <td>NCIS-24-025</td>
+                            <td>Vol d’armement</td>
+                            <td><span class="badge badge-yellow">HAUTE</span></td>
+                            <td>SA Torres</td>
+                            <td>02:13</td>
+                            <td>Coordination NCIS / NAVY</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- SECTION AGENTS -->
+        <section id="section-agents" class="section" style="display:none;">
+            <div class="panel">
+                <div class="panel-header">
+                    <div>
+                        <div class="panel-title">Répertoire des agents</div>
+                        <div class="panel-subtitle">Profils, affectations et niveaux d’habilitation</div>
+                    </div>
+                    <div class="panel-actions">Ajouter un agent</div>
+                </div>
+
+                <div class="agents-list">
+                    <div class="agent-item">
+                        <div class="agent-main">
+                            <div class="agent-name">SA Leroy Jethro Gibbs</div>
+                            <div class="agent-meta">Matricule : NCIS-001 • Clearance : TS/SCI</div>
+                            <div class="agent-meta">Spécialité : Commandement, interrogatoires, terrain</div>
+                        </div>
+                        <div>
+                            <span class="badge badge-green">Actif</span>
+                        </div>
+                    </div>
+
+                    <div class="agent-item">
+                        <div class="agent-main">
+                            <div class="agent-name">SA Anthony DiNozzo</div>
+                            <div class="agent-meta">Matricule : NCIS-014 • Clearance : SECRET</div>
+                            <div class="agent-meta">Spécialité : Filatures, couverture, interrogatoires</div>
+                        </div>
+                        <div>
+                            <span class="badge badge-blue">En mission</span>
+                        </div>
+                    </div>
+
+                    <div class="agent-item">
+                        <div class="agent-main">
+                            <div class="agent-name">SA Timothy McGee</div>
+                            <div class="agent-meta">Matricule : NCIS-027 • Clearance : TS</div>
+                            <div class="agent-meta">Spécialité : Cyber, forensics, analyse</div>
+                        </div>
+                        <div>
+                            <span class="badge badge-green">Disponible</span>
+                        </div>
+                    </div>
+
+                    <div class="agent-item">
+                        <div class="agent-main">
+                            <div class="agent-name">ME Dr. Donald "Ducky" Mallard</div>
+                            <div class="agent-meta">Médecin légiste en chef</div>
+                            <div class="agent-meta">Spécialité : Autopsies, analyse médico-légale</div>
+                        </div>
+                        <div>
+                            <span class="badge badge-blue">Au labo</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION MESSAGES -->
+        <section id="section-messages" class="section" style="display:none;">
+            <div class="panel">
+                <div class="panel-header">
+                    <div>
+                        <div class="panel-title">Messagerie interne</div>
+                        <div class="panel-subtitle">Canal sécurisé – Usage strictement professionnel</div>
+                    </div>
+                    <div class="panel-actions">Nouveau message</div>
+                </div>
+
+                <div class="messages-list">
+                    <div class="message-item">
+                        <div class="message-main">
+                            <div class="message-title">Compte-rendu opération – NCIS-24-025</div>
+                            <div class="message-meta">De : SA Torres • À : Équipe Gibbs</div>
+                            <div class="message-meta">Résumé : Contact établi avec source, informations partielles obtenues.</div>
+                        </div>
+                        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
+                            <div class="priority-dot priority-med"></div>
+                            <span class="message-tag">FIELD REPORT</span>
+                        </div>
+                    </div>
+
+                    <div class="message-item">
+                        <div class="message-main">
+                            <div class="message-title">Rappel – Procédures salle d’interrogatoire</div>
+                            <div class="message-meta">De : Legal • À : Tous les agents</div>
+                            <div class="message-meta">Mise à jour des droits des suspects et enregistrements vidéo.</div>
+                        </div>
+                        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
+                            <div class="priority-dot priority-low"></div>
+                            <span class="message-tag">LEGAL</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="main-footer">
+            <div>NCIS Internal Network • Log ID : 2026-02-17-α</div>
+            <div class="link-soft">Déconnexion</div>
+        </footer>
+    </main>
+
+    <script>
+        // Navigation simple entre sections
+        const navItems = document.querySelectorAll('.nav-item[data-section]');
+        const sections = document.querySelectorAll('.section');
+
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const target = item.getAttribute('data-section');
+
+                // Active state sidebar
+                navItems.forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+
+                // Show/hide sections
+                sections.forEach(sec => {
+                    if (sec.id === 'section-' + target) {
+                        sec.style.display = 'block';
+                    } else {
+                        sec.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
