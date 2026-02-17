@@ -1,0 +1,221 @@
+/* ------------------------------
+   GLOBAL
+--------------------------------*/
+body {
+    margin: 0;
+    font-family: system-ui, sans-serif;
+    background: radial-gradient(circle at top, #1b2735 0, #090a0f 55%, #020308 100%);
+    color: #f5f7fb;
+    display: flex;
+    height: 100vh;
+}
+
+/* ------------------------------
+   SIDEBAR
+--------------------------------*/
+.sidebar {
+    width: 260px;
+    background: #05070b;
+    border-right: 1px solid #1f2633;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.logo-block {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-circle {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 2px solid #1ea7ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+.logo-text span:first-child {
+    font-size: 12px;
+    color: #9aa4b8;
+    letter-spacing: 0.18em;
+}
+
+.logo-text span:last-child {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.sidebar-section-title {
+    font-size: 11px;
+    color: #9aa4b8;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    margin-bottom: 6px;
+}
+
+.nav-list {
+    list-style: none;
+    padding: 0;
+}
+
+.nav-item {
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 6px;
+    cursor: pointer;
+    background: #0b111a;
+    color: #9aa4b8;
+    transition: 0.2s;
+}
+
+.nav-item:hover,
+.nav-item.active {
+    background: #12344a;
+    color: #fff;
+}
+
+/* ------------------------------
+   MAIN
+--------------------------------*/
+.main {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.top-bar h1 {
+    margin: 0;
+}
+
+.section {
+    display: none;
+}
+
+.section.active {
+    display: block;
+}
+
+/* ------------------------------
+   PANELS
+--------------------------------*/
+.panel {
+    background: rgba(5, 7, 11, 0.96);
+    border: 1px solid #1f2633;
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 20px;
+}
+
+.btn {
+    background: #1ea7ff;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #000;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+.btn:hover {
+    background: #3cb8ff;
+}
+
+.btn-close {
+    background: #ff4b5c;
+    color: white;
+}
+
+.btn-close:hover {
+    background: #ff6b7a;
+}
+
+/* ------------------------------
+   FORMS
+--------------------------------*/
+input, select, textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 6px;
+    margin-bottom: 12px;
+    border-radius: 6px;
+    border: 1px solid #1f2633;
+    background: #0b111a;
+    color: #fff;
+}
+
+textarea {
+    height: 80px;
+    resize: vertical;
+}
+
+.hidden {
+    display: none;
+}
+
+/* ------------------------------
+   TABLES
+--------------------------------*/
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th {
+    text-align: left;
+    padding: 8px;
+    color: #9aa4b8;
+    border-bottom: 1px solid #1f2633;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+td {
+    padding: 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+tr:hover {
+    background: rgba(18, 52, 74, 0.4);
+    cursor: pointer;
+}
+
+/* ------------------------------
+   PANNEAU LATÉRAL (FICHE AFFAIRE)
+--------------------------------*/
+.case-panel {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 35%;
+    min-width: 420px;
+    height: 100%;
+    background: #05070b;
+    border-left: 1px solid #1f2633;
+    box-shadow: -4px 0 20px rgba(0,0,0,0.6);
+    transition: right 0.35s ease;
+    z-index: 999;
+    overflow-y: auto;
+}
+
+.case-panel.open {
+    right: 0;
+}
+
+.case-panel-content {
+    padding: 20px;
+}
+
+.case-panel-content h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #1f2633;
+    padding-bottom: 10px;
+}
